@@ -21,9 +21,8 @@ const Sequelize = require("sequelize")
 //   }
 // });
 
-const sequelize = new Sequelize(process.env.CLEARDB_URL, {
-    dialect: 'mysql',
-    protocol: 'mysql'
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'mysql'
 })
 
 exports.sequelize = sequelize
