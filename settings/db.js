@@ -8,9 +8,7 @@ const Sequelize = require("sequelize")
 //   }
 // });
 
-const sequelize = new Sequelize( process.env.DATABASE_URL, {
-  dialect: "mysql",
-});
+const sequelize = new Sequelize(process.env.DATABASE_URL)
 
 exports.sequelize = sequelize
 
