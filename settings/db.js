@@ -21,12 +21,9 @@ const Sequelize = require("sequelize")
 //   }
 // });
 
-sequelize = new Sequelize(process.env.DATABASE_URL, {
+sequelize = new Sequelize("mysql://b00de8e84caa4d:b8404a0e@us-cdbr-east-04.cleardb.com/heroku_175afd7316028f8?reconnect=true", {
     dialect: 'mysql',
-    protocol: 'mysql',
-    dialectOptions: {
-        ssl: true
-    }
+    protocol: 'mysql'
 })
 
 exports.sequelize = sequelize
