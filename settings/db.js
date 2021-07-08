@@ -1,8 +1,16 @@
 const Sequelize = require("sequelize")
 
-const sequelize = new Sequelize("project", "root", "root", {
+// const sequelize = new Sequelize("project", "root", "root", {
+//   dialect: "mysql",
+//   host: "localhost",
+//   define: {
+//     timestamps: false
+//   }
+// });
+
+const sequelize = new Sequelize("project", "b00de8e84caa4d", "b8404a0e", {
   dialect: "mysql",
-  host: "localhost",
+  host: "us-cdbr-east-04.cleardb.com",
   define: {
     timestamps: false
   }
