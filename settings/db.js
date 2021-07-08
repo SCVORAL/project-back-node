@@ -8,12 +8,8 @@ const Sequelize = require("sequelize")
 //   }
 // });
 
-const sequelize = new Sequelize("heroku_175afd7316028f8", "b00de8e84caa4d", "b8404a0e", {
+const sequelize = new Sequelize( process.env.DATABASE_URL {
   dialect: "mysql",
-  host: "us-cdbr-east-04.cleardb.com",
-  define: {
-    timestamps: false
-  }
 });
 
 exports.sequelize = sequelize
