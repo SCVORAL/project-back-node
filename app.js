@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize")
 const express = require("express")
 const app = express()
-const initialize = require("./initializer")
+// const initialize = require("./initializer")
 const { sequelize } = require('./settings/db')
 const cors = require('cors')
 const bodyParser = require('body-parser')
