@@ -9,9 +9,5 @@ exports.Chapter = sequelize.define("chapter", {
   content: {
     type: Sequelize.TEXT,
     allowNull: true
-  },
-  number: {
-    type: Sequelize.INTEGER,
-    allowNull: false
   }
 })

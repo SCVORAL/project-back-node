@@ -1,7 +1,7 @@
 const {Router} = require('express')
 const {check} = require('express-validator')
 const router = Router()
-const { register, login, verify, blockUser, unLockUser, delUser, demoteAdmin, addAdmin } = require('./../controller/usersController')
+const { register, login, verify, blockUser, unLockUser, delUser, addUser, addAdmin, getAllUsers } = require('./../controller/usersController')
 
 router.post(
   '/register',
@@ -31,14 +31,19 @@ router.post(
   verify
 )
 
+router.get(
+  '/getAllUsers',
+  getAllUsers
+)
+
 router.post(
   '/addAdmin',
   addAdmin
 )
 
 router.post(
-  '/demoteAdmin',
-  demoteAdmin
+  '/addUser',
+  addUser
 )
 
 router.post(

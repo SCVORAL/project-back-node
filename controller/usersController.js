@@ -100,134 +100,69 @@ exports.login = async (req, res) => {
   }
 }
 
-exports.addAdmin = async (req, res) => {
-  try {
+exports.getAllUsers = async (req, res) => {
 
-    const errors = validationResult(req)
+  const users = await db.User.findAll({ include: ['role'] })
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors: errors.array(),
-        message: 'Некоректные данные при регистрации'
-      })
-    }
-
-    const {id} = req.body
-
-    await db.User.update({ roleId: 1 }, { where: { id } })
-
-    const users = await db.User.findAll()
-
-    res.send(users)
-
-  } catch(e) {
-    res.json({ message: 'Add admin error' })
-  }
+  res.send(users)
 }
 
-exports.demoteAdmin = async (req, res) => {
-  try {
+exports.addAdmin = async (req, res) => {
 
-    const errors = validationResult(req)
+  const {checked} = req.body
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors: errors.array(),
-        message: 'Некоректные данные при регистрации'
-      })
-    }
+  await checked.map(async id => {
+    await db.User.update({ roleId: 1 }, { where: { id } })
+  })
 
-    const {id} = req.body
+  res.json({ message: '1' })
 
+}
+
+exports.addUser = async (req, res) => {
+
+  const {checked} = req.body
+
+  await checked.map(async id => {
     await db.User.update({ roleId: 2 }, { where: { id } })
+  })
 
-    const users = await db.User.findAll()
+  res.json({ message: '1' })
 
-    res.send(users)
-
-  } catch(e) {
-    res.json({ message: 'Demote admin error' })
-  }
 }
 
 exports.delUser = async (req, res) => {
-  try {
 
-    const errors = validationResult(req)
+  const {checked} = req.body
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors: errors.array(),
-        message: 'Некоректные данные при регистрации'
-      })
-    }
-
-    const {id} = req.body
-
+  await checked.map(async id => {
     await db.User.destroy({ where: { id } })
+  })
 
-    // const users = await db.User.findAll({ include: ['role'] })
-    const users = await db.User.findAll()
+  res.json({ message: '1' })
 
-    res.send(users)
-
-  } catch(e) {
-    res.json({ message: 'Del user error' })
-  }
 }
 
 exports.blockUser = async (req, res) => {
-  try {
 
-    const errors = validationResult(req)
+  const {checked} = req.body
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors: errors.array(),
-        message: 'Некоректные данные при блокировке'
-      })
-    }
+  await checked.map(async id => {
+    await db.User.update({ status: false }, { where: { id } })
+  })
 
-    const {checkedIds} = req.body
+  res.json({ message: '1' })
 
-    // id1.map(async id => {
-      await db.User.update({ status: false }, { where: { id } })
-    // })
-
-    // const users = await db.User.findAll({ include: ['role'] })
-    const users = await db.User.findAll()
-
-    res.send(users)
-
-  } catch(e) {
-    res.json({ message: 'Block user error' })
-  }
 }
 
 exports.unLockUser = async (req, res) => {
-  try {
-
-    const errors = validationResult(req)
-
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors: errors.array(),
-        message: 'Некоректные данные при разблокировке'
-      })
-    }
     
-    const {checkedIds} = req.body
+  const {checked} = req.body
 
-    checkedIds.map(async id => {
-      await db.User.update({ status: true }, { where: { id } })
-    })
+  checked.map(async id => {
+    await db.User.update({ status: true }, { where: { id } })
+  })
 
-    const users = await db.User.findAll()
-
-    res.send(users)
-
-    } catch(e) {
-      res.json({ message: 'Unlock user error' })
-    }
+  res.json({ message: '1' })
   
 }
