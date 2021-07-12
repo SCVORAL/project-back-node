@@ -102,8 +102,6 @@ exports.updateChapter = async (req, res) => {
     content
   }, {where: {id}} )
 
-  console.log(chapter)
-
   await db.FanFic.update({
     lastDateUpdate: moment().format('YYYY-MM-DD hh:mm:ss')
   }, { where: { id } })
@@ -162,6 +160,8 @@ exports.delChapter = async (req, res) => {
       lastDateUpdate: moment().format('YYYY-MM-DD hh:mm:ss')
   }, { where: { id: fanficId } })
 
+  res.json({ "message": 1 })
+
 }
 
 exports.getAllFanFic = async (req, res) => {
@@ -170,6 +170,7 @@ exports.getAllFanFic = async (req, res) => {
   
   const fanfic = await db.FanFic.findAll({
     where: {fandomId: idFandom},
+    order: [['id', 'DESC']],
     include: [
       {
         model: db.Tag,
@@ -227,31 +228,22 @@ exports.addFanFic = async (req, res) => {
 
     const { userId, name, fandomId, tags, description, imgBase64 } = req.body
 
-    const urlImage = await cloudinary.uploader.upload(imgBase64)
+    let urlImage = 'https://res.cloudinary.com/scvoral/image/upload/v1626026369/woocommerce-placeholder_p43qds.png'
+
+    if(imgBase64 !== null){
+      const obj = await cloudinary.uploader.upload(imgBase64)
+      urlImage = obj.url
+    }
 
     let fanfic = await db.FanFic.create({ 
       name, 
       description, 
-      urlImage: urlImage.url, 
+      urlImage, 
       userId, 
       fandomId 
     })
 
-    for (let i = 0; i < tags.length; i++) {
-      let tag = await db.Tag.findOne({ where: { name: tags[i] } })
-      if (!tag) {
-        tag = await db.Tag.create({
-          name: tags[i]
-        })
-      }
-      await fanfic.addTag(
-        tag, { through: { grade: 1 } }
-      )
-    }
-
-    fanfic = await db.FanFic.findByPk(fanfic.id, { include: ['tags', 'fandom'] })
-
-    return fanfic
+    res.json({ "message": 1 })
     
   } catch (e) {
 
@@ -259,11 +251,37 @@ exports.addFanFic = async (req, res) => {
 
 }
 
-exports.img = async (req, res) => {
+exports.editFanFic = async (req, res) => {
 
-  // Удаление
+  const {id, name, fandomId, description, imgBase64, urlImg} = req.body
 
-  // cloudinary.v2.api.delete_resources("cvjrsl7u66w1rhdnp00f",
-  // function(error, result) {console.log(result, error); });
+  if (imgBase64 === ''){
+
+    await db.FanFic.update({
+      name,
+      fandomId,
+      description
+    }, {where: {id}} )
+
+  } else {
+
+    let idImg = urlImg.split('/')
+    idImg = idImg[idImg.length - 1].split('.')
+
+    if(idImg[0] === 'woocommerce-placeholder_p43qds')
+      await cloudinary.v2.uploader.destroy(idImg[0])
+
+    const urlImage = await cloudinary.uploader.upload(imgBase64)
+
+    await db.FanFic.update({
+      name,
+      fandomId,
+      description,
+      urlImage: urlImage.url
+    }, {where: {id}} )
+
+  }
+
+   res.json({ "message": 1 })
 
 }

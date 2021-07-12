@@ -7,7 +7,7 @@ exports.FanFic = sequelize.define("fanfic", {
     allowNull: false
   },
   description: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false
   },
   urlImage: {

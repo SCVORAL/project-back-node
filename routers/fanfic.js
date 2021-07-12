@@ -1,7 +1,7 @@
 const {Router} = require('express')
 const {check} = require('express-validator')
 const router = Router()
-const { getFanFic, img, getFandom, getTags, addFanFic, getAllFanFic, getFanFicId, addChapter, updateChapter, addFandom, tagAdd, delChapter, deleteFanFic} = require('./../controller/fanFicController')
+const { getFanFic, img, getFandom, getTags, addFanFic, editFanFic, getAllFanFic, getFanFicId, addChapter, updateChapter, addFandom, tagAdd, delChapter, deleteFanFic} = require('./../controller/fanFicController')
 
 router.get(
   '/getfanfic',
@@ -34,6 +34,11 @@ router.post(
 )
 
 router.post(
+  '/delChapter',
+  delChapter
+)
+
+router.post(
   '/updateChapter',
   updateChapter
 )
@@ -56,6 +61,11 @@ router.get(
 router.post(
   '/addfanfic',
   addFanFic
+)
+
+router.post(
+  '/editFanFic',
+  editFanFic
 )
 
 module.exports = router
